@@ -16,7 +16,7 @@
   \***************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Ship)\n/* harmony export */ });\nfunction Ship() {\n  console.log(\"hello\");\n  return \"1\";\n}\n\n\n//# sourceURL=webpack://project-battleship/./src/battleship.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nconst MAX_LENGTH = 4;\nconst MIN_LENGTH = 1;\n\nfunction Ship(length = 1) {\n  if (length > MAX_LENGTH) length = MAX_LENGTH;\n  if (length < MIN_LENGTH) length = MIN_LENGTH;\n  let lives = length;\n  const hit = function () {\n    if (lives !== 0) lives -= 1;\n  };\n  const isSunk = function () {\n    return lives === 0;\n  };\n  return { length, hit, isSunk };\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Ship);\n\n\n//# sourceURL=webpack://project-battleship/./src/battleship.js?");
 
 /***/ }),
 
@@ -26,7 +26,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _battleship__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./battleship */ \"./src/battleship.js\");\nfunction hello() {\n  console.log(\"hello\");\n}\n// export default hello;\n\n(0,_battleship__WEBPACK_IMPORTED_MODULE_0__[\"default\"])();\n\n\n//# sourceURL=webpack://project-battleship/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _battleship__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./battleship */ \"./src/battleship.js\");\n\n(0,_battleship__WEBPACK_IMPORTED_MODULE_0__[\"default\"])();\n\n\n//# sourceURL=webpack://project-battleship/./src/index.js?");
 
 /***/ })
 
