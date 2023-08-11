@@ -41,3 +41,11 @@ body {
 .occupied {
   background-color: brown;
 }
+
+.hit {
+  background-color: red;
+}
+
+.hitboat {
+  background-color: green;
+}
