@@ -20,13 +20,43 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
+/***/ "./src/doms/createDomForBoard.js":
+/*!***************************************!*\
+  !*** ./src/doms/createDomForBoard.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nfunction createDomForBoard(size) {\n  const body = document.querySelector(\"#main\");\n  const board = document.createElement(\"div\");\n  board.className = \"board\";\n  let piece;\n  let row;\n  for (let i = 0; i < size; i++) {\n    row = document.createElement(\"div\");\n    row.className = \"row\";\n    for (let j = 0; j < size; j++) {\n      piece = document.createElement(\"div\");\n      piece.className = \"piece\";\n      row.appendChild(piece);\n    }\n    board.appendChild(row);\n  }\n  body.appendChild(board);\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createDomForBoard);\n\n\n//# sourceURL=webpack://project-battleship/./src/doms/createDomForBoard.js?");
+
+/***/ }),
+
+/***/ "./src/gameboard.js":
+/*!**************************!*\
+  !*** ./src/gameboard.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _battleship__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./battleship */ \"./src/battleship.js\");\n\nfunction Piece(empty = true, hit = false) {\n  return { empty, hit };\n}\nfunction createBoard(size = 8) {\n  let missed = 0;\n  let sunkedShips = false;\n  let numberOfShips = 0;\n  function Board() {\n    let board = [];\n    for (let i = 0; i < size; i++) {\n      board.push([]);\n      for (let j = 0; j < size; j++) {\n        board[i].push(Piece());\n      }\n    }\n    return board;\n  }\n  let board = Board();\n  function isBoatThere(lenght, x, y) {\n    for (let i = 0; i < lenght; i++) {\n      if (!board[x][y + i] || !board[x][y + i].empty) return true;\n    }\n    return false;\n  }\n  const placeBoat = function (length, x, y) {\n    let newShip = (0,_battleship__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(length);\n    length = newShip.length;\n    if (!isBoatThere(length, x, y)) {\n      numberOfShips += 1;\n      for (let i = 0; i < length; i++) {\n        board[x][y + i].empty = newShip;\n      }\n      return true;\n    }\n    return false;\n  };\n  function receiveAttack(x, y) {\n    let piece = board[x][y];\n    if (piece) {\n      if (piece.empty === true) {\n        missed += 1;\n        piece.hit = true;\n        piece.empty = false;\n      } else if (!piece.hit) {\n        piece.empty.hit();\n        piece.hit = true;\n        if (piece.empty.isSunk()) sunkedShips += 1;\n      } else {\n        return false;\n      }\n      return true;\n    }\n    return false;\n  }\n  function getMissed() {\n    return missed;\n  }\n  return { placeBoat, board, receiveAttack, getMissed };\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createBoard);\n\n\n//# sourceURL=webpack://project-battleship/./src/gameboard.js?");
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _battleship__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./battleship */ \"./src/battleship.js\");\n\n(0,_battleship__WEBPACK_IMPORTED_MODULE_0__[\"default\"])();\n\n\n//# sourceURL=webpack://project-battleship/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _gameboard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./gameboard */ \"./src/gameboard.js\");\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player */ \"./src/player.js\");\n/* harmony import */ var _doms_createDomForBoard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./doms/createDomForBoard */ \"./src/doms/createDomForBoard.js\");\n\n\n\n\nfunction newGame(size = 8) {\n  let newPlayer = (0,_player__WEBPACK_IMPORTED_MODULE_1__[\"default\"])(\"bob\");\n  let computer = (0,_player__WEBPACK_IMPORTED_MODULE_1__[\"default\"])(\"bob\", true);\n  (0,_doms_createDomForBoard__WEBPACK_IMPORTED_MODULE_2__[\"default\"])(size);\n  (0,_doms_createDomForBoard__WEBPACK_IMPORTED_MODULE_2__[\"default\"])(size);\n}\n\nnewGame();\n\n\n//# sourceURL=webpack://project-battleship/./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/player.js":
+/*!***********************!*\
+  !*** ./src/player.js ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nfunction Player(name, computer = false) {\n  let ships = [];\n  function addShip(Ship) {\n    ships.push(Ship);\n  }\n  function makeMove() {}\n  return {\n    addShip,\n    name,\n    computer,\n  };\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Player);\n\n\n//# sourceURL=webpack://project-battleship/./src/player.js?");
 
 /***/ })
 
