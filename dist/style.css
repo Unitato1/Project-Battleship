@@ -32,3 +32,12 @@ body {
   padding: 0;
   margin: 0;
 }
+
+.piece:hover {
+  background-color: brown;
+  transition: 0.5s;
+}
+
+.occupied {
+  background-color: brown;
+}
