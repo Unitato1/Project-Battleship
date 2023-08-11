@@ -33,7 +33,7 @@ test("Testing hits after being sunk", () => {
   testedShip.hit();
   expect(testedShip.isSunk()).toBe(true);
 });
-test("Testing isSunked", () => {
+test("Testing 1 live left", () => {
   let testedShip = Ship(3);
   testedShip.hit();
   testedShip.hit();
