@@ -1,6 +1,6 @@
 import createBoard from "../gameboard";
 
-function createDomForBoard(size, computer = false) {
+function createDomForBoard(size, shipSizes, player, computer = false) {
   let board = createBoard();
   let keepingAllPieces = [];
   const body = document.querySelector("#main");
@@ -9,11 +9,17 @@ function createDomForBoard(size, computer = false) {
   const gameProgres = document.querySelector("#gamecontrol");
   header.appendChild(gameProgres);
   boardDom.className = "board";
+  let lenght = shipSizes.pop();
   function placingBoat() {
     let x = parseInt(this.dataset.x);
     let y = parseInt(this.dataset.y);
     gameProgres.textContent = "";
-    if (!computer && board.placeBoat(3, x, y)) {
+    if (shipSizes.length === 0) {
+      gameProgres.textContent = "You can start blasting.";
+    } else if (!computer && board.placeBoat(lenght, x, y)) {
+      player.addShip(board.board[x][y].empty);
+      console.log(player.getShips());
+      lenght = shipSizes.pop();
       uptadeBoard();
     } else if (computer) {
       gameProgres.textContent = "Wrong Board this one is for computer.";
@@ -29,7 +35,7 @@ function createDomForBoard(size, computer = false) {
       }
     }
   }
-
+  function attacking() {}
   let piece;
   let row;
   for (let i = 0; i < size; i++) {
@@ -40,14 +46,16 @@ function createDomForBoard(size, computer = false) {
       piece = document.createElement("div");
       piece.className = "piece";
       piece.dataset.y = j;
-      piece.dataset.x = i;
-      piece.addEventListener("click", placingBoat);
       keepingAllPieces[i].push(piece);
       row.appendChild(piece);
+      piece.dataset.x = i;
+      if (computer) piece.addEventListener("click", attacking);
+      else piece.addEventListener("click", placingBoat);
     }
     boardDom.appendChild(row);
   }
   body.appendChild(boardDom);
+  return { board, uptadeBoard };
 }
 
 export default createDomForBoard;
