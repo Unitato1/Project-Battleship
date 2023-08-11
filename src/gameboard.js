@@ -1,5 +1,5 @@
 import Ship from "./battleship";
-function Piece(empty = true, hit = false) {
+function Piece(empty = false, hit = false) {
   return { empty, hit };
 }
 function createBoard(size = 8) {
@@ -19,7 +19,7 @@ function createBoard(size = 8) {
   let board = Board();
   function isBoatThere(lenght, x, y) {
     for (let i = 0; i < lenght; i++) {
-      if (!board[x][y + i] || !board[x][y + i].empty) return true;
+      if (!board[x][y + i] || board[x][y + i].empty) return true;
     }
     return false;
   }
@@ -38,10 +38,10 @@ function createBoard(size = 8) {
   function receiveAttack(x, y) {
     let piece = board[x][y];
     if (piece) {
-      if (piece.empty === true) {
+      if (!piece.empty === true) {
         missed += 1;
         piece.hit = true;
-        piece.empty = false;
+        piece.empty = true;
       } else if (!piece.hit) {
         piece.empty.hit();
         piece.hit = true;

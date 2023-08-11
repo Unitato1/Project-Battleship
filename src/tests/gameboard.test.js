@@ -10,8 +10,8 @@ test("place board inside board", () => {
 test("place boat outside board", () => {
   let board = createBoard();
   board.placeBoat(3, 2, 6);
-  expect(board.board[2][6].empty).toBe(true);
-  expect(board.board[2][7].empty).toBe(true);
+  expect(board.board[2][6].empty).toBe(false);
+  expect(board.board[2][7].empty).toBe(false);
 });
 test("createBoard created board", () => {
   let board = createBoard();
@@ -78,7 +78,7 @@ test("Test for hit ship on board and destroy it", () => {
 });
 test("Test for destroying and missing", () => {
   let board = createBoard();
-  board.placeBoat(4, 6, 4);
+  expect(board.placeBoat(4, 6, 4)).toBe(true);
   board.receiveAttack(3, 4);
   board.receiveAttack(4, 4);
   board.receiveAttack(5, 4);
