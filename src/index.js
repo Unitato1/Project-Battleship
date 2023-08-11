@@ -17,7 +17,7 @@ function newGame(size = 8) {
       y = Math.floor(Math.random() * 8);
     }
   }
-  console.log(computerBoard.board);
+  computerBoard.uptadeBoard();
 }
 
 newGame();

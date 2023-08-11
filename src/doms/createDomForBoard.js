@@ -18,7 +18,6 @@ function createDomForBoard(size, shipSizes, player, computer = false) {
       gameProgres.textContent = "You can start blasting.";
     } else if (!computer && board.placeBoat(lenght, x, y)) {
       player.addShip(board.board[x][y].empty);
-      console.log(player.getShips());
       lenght = shipSizes.pop();
       uptadeBoard();
     } else if (computer) {
@@ -35,7 +34,21 @@ function createDomForBoard(size, shipSizes, player, computer = false) {
       }
     }
   }
-  function attacking() {}
+  function attacking() {
+    let x = parseInt(this.dataset.x);
+    let y = parseInt(this.dataset.y);
+    console.log(this.dataset.x, this.dataset.y, board.board[x][y].empty);
+    if (!board.board[x][y].hit) {
+      if (board.board[x][y].empty) {
+        board.receiveAttack(x, y);
+        keepingAllPieces[x][y].className = "piece hitboat";
+        board.board[x][y].hit = true;
+      } else {
+        keepingAllPieces[x][y].className = "piece hit";
+        board.board[x][y].hit = true;
+      }
+    }
+  }
   let piece;
   let row;
   for (let i = 0; i < size; i++) {
@@ -55,6 +68,7 @@ function createDomForBoard(size, shipSizes, player, computer = false) {
     boardDom.appendChild(row);
   }
   body.appendChild(boardDom);
+
   return { board, uptadeBoard };
 }
 
