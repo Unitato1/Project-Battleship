@@ -4,6 +4,8 @@ function Piece(empty = true, hit = false) {
 }
 function createBoard(size = 8) {
   let missed = 0;
+  let sunkedShips = false;
+  let numberOfShips = 0;
   function Board() {
     let board = [];
     for (let i = 0; i < size; i++) {
@@ -25,6 +27,7 @@ function createBoard(size = 8) {
     let newShip = Ship(length);
     length = newShip.length;
     if (!isBoatThere(length, x, y)) {
+      numberOfShips += 1;
       for (let i = 0; i < length; i++) {
         board[x][y + i].empty = newShip;
       }
@@ -35,12 +38,20 @@ function createBoard(size = 8) {
   function receiveAttack(x, y) {
     let piece = board[x][y];
     if (piece) {
-      if (piece.empty === true) missed += 1;
-      else {
+      if (piece.empty === true) {
+        missed += 1;
+        piece.hit = true;
+        piece.empty = false;
+      } else if (!piece.hit) {
         piece.empty.hit();
         piece.hit = true;
+        if (piece.empty.isSunk()) sunkedShips += 1;
+      } else {
+        return false;
       }
+      return true;
     }
+    return false;
   }
   function getMissed() {
     return missed;
