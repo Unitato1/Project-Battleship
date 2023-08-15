@@ -2,7 +2,6 @@ import createBoard from "../gameboard";
 import newGame from "../index";
 
 function createDomForBoard(size, shipSizes, player, computer = false) {
-  let board = createBoard();
   const body = document.querySelector("#main");
   const header = document.querySelector("#header");
   const gameProgres = document.querySelector("#gamecontrol");
@@ -25,11 +24,6 @@ function createDomForBoard(size, shipSizes, player, computer = false) {
         keepingAllPieces[i].push(piece);
         row.appendChild(piece);
         piece.dataset.x = i;
-        // if (computer) {
-        //   piece.addEventListener("click", attacking);
-        //   piece.dataset.computer = computer;
-        // } else piece.addEventListener("click", placingBoat);
-        // piece.addEventListener("click",);
       }
       boardDom.appendChild(row);
     }

@@ -4,7 +4,7 @@ function Piece(empty = false, hit = false) {
 }
 function createBoard(size = 8) {
   let missed = 0;
-  let sunkedShips = false;
+  let sunkedShips = 0;
   let numberOfShips = 0;
   function Board() {
     let board = [];
@@ -37,6 +37,7 @@ function createBoard(size = 8) {
   };
   function receiveAttack(x, y) {
     let piece = board[x][y];
+    console.log(piece);
     if (piece) {
       if (!piece.empty === true) {
         missed += 1;
@@ -45,6 +46,7 @@ function createBoard(size = 8) {
       } else if (!piece.hit) {
         piece.empty.hit();
         piece.hit = true;
+        console.log(sunkedShips, numberOfShips);
         if (piece.empty.isSunk()) sunkedShips += 1;
       } else {
         return false;
@@ -56,6 +58,9 @@ function createBoard(size = 8) {
   function getMissed() {
     return missed;
   }
-  return { placeBoat, board, receiveAttack, getMissed };
+  function allShipsSunk() {
+    return sunkedShips === numberOfShips;
+  }
+  return { placeBoat, board, receiveAttack, getMissed, allShipsSunk };
 }
 export default createBoard;

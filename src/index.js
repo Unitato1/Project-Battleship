@@ -9,16 +9,20 @@ function newGame(size = 8) {
 
   let newPlayer = Player("bob");
   let computer = Player("bob", true);
+
   let creatorDom = createDomForBoard(size);
   let playerDom = creatorDom.createPieces();
   let gameProgres = playerDom.gameProgres;
   let playerBoardDom = playerDom.keepingAllPieces;
-  let computerBoardDom = creatorDom.createPieces().keepingAllPieces;
+
+  let computerDom = creatorDom.createPieces();
+  let computerBoardDom = computerDom.keepingAllPieces;
+
   let computerBoard = createBoard();
   let playerBoard = createBoard();
+
   function computerPlaceShips() {
     for (let size of shipSizesComputer) {
-      console.log(size, "a");
       let x = Math.floor(Math.random() * 8);
       let y = Math.floor(Math.random() * 8);
       while (!computerBoard.placeBoat(size, x, y)) {
@@ -29,32 +33,26 @@ function newGame(size = 8) {
     }
   }
   computerPlaceShips();
-  function uptadeBoardCP() {
-    let conter = 0;
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
-        if (computerBoard.board[i][j].empty) {
-          conter++;
-          console.log(conter);
-          computerBoardDom[i][j].className = "piece occupied";
-        }
-      }
-    }
-  }
-  uptadeBoardCP();
+  // function uptadeBoardCP() {
+  //   for (let i = 0; i < size; i++) {
+  //     for (let j = 0; j < size; j++) {
+  //       if (computerBoard.board[i][j].empty) {
+  //         computerBoardDom[i][j].className = "piece occupied";
+  //       }
+  //     }
+  //   }
+  // }
+  // uptadeBoardCP();
   function placingBoat() {
     let x = parseInt(this.dataset.x);
     let y = parseInt(this.dataset.y);
     let lenght = shipSizesPlayer[shipSizesPlayer.length - 1];
     if (shipSizesPlayer.length === 0) {
-      gameProgres.textContent = "You can start blasting.";
+      gameProgres.textContent =
+        "You can start blasting, no more boats to place.";
     } else if (!this.dataset.computer && playerBoard.placeBoat(lenght, x, y)) {
       newPlayer.addShip(playerBoard.board[x][y].empty);
-      // lenght = shipSizesPlayer.pop();
       uptadeBoard();
-    } else if (this.dataset.computer) {
-      gameProgres.textContent = "Wrong Board this one is for computer.";
-      return;
     } else {
       gameProgres.textContent = "You chose wrong piece. Try again.";
       return;
@@ -66,6 +64,11 @@ function newGame(size = 8) {
       piece.addEventListener("click", placingBoat);
     });
   });
+  computerBoardDom.forEach((element) => {
+    element.forEach((piece) => {
+      piece.addEventListener("click", attacking);
+    });
+  });
   function uptadeBoard() {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
@@ -74,36 +77,43 @@ function newGame(size = 8) {
       }
     }
   }
-  // function attacking() {
-  //   let x = parseInt(this.dataset.x);
-  //   let y = parseInt(this.dataset.y);
-  //   if (!board.board[x][y].hit && allShipsPlaced) {
-  //     if (board.board[x][y].empty) {
-  //       keepingAllPieces[x][y].className = "piece hitboat";
-  //       board.board[x][y].hit = true;
-  //     } else {
-  //       keepingAllPieces[x][y].className = "piece hit";
-  //       board.board[x][y].hit = true;
-  //     }
-  //     board.receiveAttack(x, y);
-  //     console.log(board.board, board.getMissed());
-  //   }
-  // }
-  // function placeBoatOnDom() {
-  //   let x = parseInt(this.dataset.x);
-  //   let y = parseInt(this.dataset.y);
-  //   if (shipSizes.length === 0) {
-  //     gameProgres.textContent = "You can start blasting.";
-  //   } else if (!this.dataset.computer && board.placeBoat(lenght, x, y)) {
-  //     player.addShip(board.board[x][y].empty);
-  //     lenght = shipSizes.pop();
-  //     uptadeBoard();
-  //   } else if (computer) {
-  //     gameProgres.textContent = "Wrong Board this one is for computer.";
-  //   } else {
-  //     gameProgres.textContent = "You chose wrong piece. Try again.";
-  //   }
-  // }
+  function attacking() {
+    let x = parseInt(this.dataset.x);
+    let y = parseInt(this.dataset.y);
+    if (computerBoard.allShipsSunk() || playerBoard.allShipsSunk()) return;
+    if (!computerBoard.board[x][y].hit && !shipSizesPlayer.length) {
+      if (computerBoard.board[x][y].empty)
+        computerBoardDom[x][y].className = "piece hitboat";
+      else {
+        computerBoardDom[x][y].className = "piece hit";
+      }
+
+      computerBoard.receiveAttack(x, y);
+      if (computerBoard.allShipsSunk()) {
+        gameProgres.textContent = "You won!!!!";
+      } else {
+        computerAttack();
+      }
+    } else gameProgres.textContent = "Place your boats first";
+  }
+  function computerAttack() {
+    let x = Math.floor(Math.random() * 8);
+    let y = Math.floor(Math.random() * 8);
+    while (playerBoard.board[x][y].hit || !playerBoard.board[x][y]) {
+      x = Math.floor(Math.random() * 8);
+      y = Math.floor(Math.random() * 8);
+    }
+    if (playerBoard.board[x][y].empty) {
+      playerBoardDom[x][y].className = "piece hitboat";
+    } else {
+      playerBoardDom[x][y].className = "piece hit";
+    }
+    playerBoard.receiveAttack(x, y);
+    if (playerBoard.allShipsSunk()) {
+      gameProgres = "Computer smart, won!!!";
+    }
+  }
+
   return { placingBoat };
 }
 
